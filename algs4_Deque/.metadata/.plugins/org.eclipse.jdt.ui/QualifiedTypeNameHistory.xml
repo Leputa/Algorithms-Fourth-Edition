@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.lang.Iterable"/>
+<fullyQualifiedTypeName name="queues.Deque"/>
+<fullyQualifiedTypeName name="com.sun.corba.se.impl.orbutil.graph.Node"/>
+<fullyQualifiedTypeName name="queues.Deque.Node"/>
+<fullyQualifiedTypeName name="Deque.Node"/>
+<fullyQualifiedTypeName name="Deque"/>
+<fullyQualifiedTypeName name="javax.management.Query"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="java.lang.Object"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.introcs.StdRandom"/>
+<fullyQualifiedTypeName name="Item"/>
+<fullyQualifiedTypeName name="RandomizedQueue"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.introcs.StdIn"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="java.lang.ArrayStoreException"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.introcs.StdOut"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdOut"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdIn"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdRandom"/>
+</qualifiedTypeNameHistroy>

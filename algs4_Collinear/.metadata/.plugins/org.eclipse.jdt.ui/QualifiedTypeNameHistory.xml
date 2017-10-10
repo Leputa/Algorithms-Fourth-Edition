@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.lang.Double"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdOut"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.In"/>
+<fullyQualifiedTypeName name="BruteCollinearPoints"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdIn"/>
+<fullyQualifiedTypeName name="FastCollinearPoints"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Array"/>
+<fullyQualifiedTypeName name="javax.swing.text.Segment"/>
+<fullyQualifiedTypeName name="LineSegment"/>
+<fullyQualifiedTypeName name="Point"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+</qualifiedTypeNameHistroy>

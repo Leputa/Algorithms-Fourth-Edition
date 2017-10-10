@@ -1,0 +1,160 @@
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Stack;
+
+public class Board {
+	private int N;
+	private int[][] boards;
+	private int num_hamming=0;
+	private int num_manhattan=0;
+	
+	// construct a board from an n-by-n array of blocks
+    // (where blocks[i][j] = block in row i, column j)
+    public Board(int[][] blocks){ 
+    	if(blocks==null)
+    		throw new java.lang.NullPointerException(" null argument");
+    	N=blocks.length;
+    	this.boards=new int[N][N];
+    	for(int i=0;i<N;i++)
+    		for(int j=0;j<N;j++)
+    			this.boards[i][j]=blocks[i][j];
+    }   
+    
+    public int dimension(){                 // board dimension n
+    	return N;
+    }
+    
+    public int hamming(){                   // number of blocks out of place
+    	for(int i=0;i<N;i++){
+    		for(int j=0;j<N;j++){
+    			if((boards[i][j]!=i*N + j + 1)&&boards[i][j]!=0)
+    				num_hamming++;
+    		}
+    	}
+    	return num_hamming;
+    }
+    
+    public int manhattan(){  // sum of Manhattan distances between blocks and goal
+    	for(int i=0;i<N;i++)
+    		for(int j=0;j<N;j++)
+    			if(boards[i][j]!=i*N + j + 1&&boards[i][j]!=0){
+    				int goali=(int)Math.ceil(boards[i][j]/N);
+    				if(boards[i][j]%N==0)
+    					goali--;
+    				int goalj=boards[i][j]%N-1;
+    				if(-1==goalj)
+    					goalj=N-1;
+    				//System.out.println(i+" "+j+" "+goali+" "+goalj);
+    				int distance=Math.abs(goali-i)+Math.abs(goalj-j);
+    				num_manhattan+=distance;
+    			}
+    	return num_manhattan;
+    }
+    
+    public boolean isGoal(){                // is this board the goal board?
+    	return this.hamming()==0;
+    }
+    
+    public Board twin()                    // a board that is obtained by exchanging any pair of blocks
+    {
+    	int [][]twinboards=new int [N][N];
+    	for(int i=0;i<N;i++)
+    		for(int j=0;j<N;j++)
+    			twinboards[i][j]=boards[i][j];
+    	if(boards[0][0]!=0&&boards[0][1]!=0){
+    		int tmp=twinboards[0][0];
+    		twinboards[0][0]=twinboards[0][1];
+    		twinboards[0][1]=tmp;
+    	}
+    	else{
+    		int tmp=twinboards[1][0];
+    		twinboards[1][0]=twinboards[1][1];
+    		twinboards[1][1]=tmp;
+    	}
+    	return new Board(twinboards);
+    }
+    
+    public boolean equals(Object y){        // does this board equal y?
+    	if(y==this)
+    		return true;
+    	if(y==null)
+    		return false;
+    	if(y.getClass()!=this.getClass())
+    		return false;
+    	Board yy=(Board)y;
+    	if(this.N!=yy.N)
+    		return false;
+    	for(int i=0;i<N;i++)
+    		for(int j=0;j<N;j++)
+    			if(boards[i][i]!=yy.boards[i][j])
+    				return false;
+    	return true;
+    }
+    
+    public Iterable<Board> neighbors(){     // all neighboring boards
+    	int [][]copy=new int[N][N];
+    	int blank_i=0;
+    	int blank_j=0;
+    	for(int i=0;i<N;i++)
+    		for(int j=0;j<N;j++){
+    			copy[i][j]=boards[i][j];
+    			if(boards[i][j]==0){
+    				blank_i=i;
+    				blank_j=j;
+    			}
+    		}
+    	Stack<Board> neighbors=new Stack<Board>();
+    	if(blank_i!=0){
+    		swap(copy, blank_i, blank_j, blank_i-1, blank_j);
+    		neighbors.push(new Board(copy));
+    		swap(copy, blank_i, blank_j, blank_i-1, blank_j);
+    	}
+    	if(blank_i!=N-1){
+    		swap(copy, blank_i, blank_j, blank_i+1, blank_j);
+    		neighbors.push(new Board(copy));
+    		swap(copy, blank_i, blank_j, blank_i+1, blank_j);
+    	}
+    	if(blank_j!=0){
+    		swap(copy, blank_i, blank_j, blank_i, blank_j-1);
+    		neighbors.push(new Board(copy));
+    		swap(copy, blank_i, blank_j, blank_i, blank_j-1);
+    	}
+    	if(blank_j!=N-1){
+    		swap(copy, blank_i, blank_j, blank_i, blank_j+1);
+    		neighbors.push(new Board(copy));
+    		swap(copy, blank_i, blank_j, blank_i, blank_j+1);
+    	}
+    	return neighbors;
+    }
+    
+    private void swap(int[][]array,int i,int j,int a,int b){
+    	int tmp=array[i][j];
+    	array[i][j]=array[a][b];
+    	array[a][b]=tmp;
+    }
+    
+    public String toString(){               // string representation of this board (in the output format specified below)
+    	StringBuilder board=new StringBuilder();
+    	board.append(N+"\n");
+    	for(int i=0;i<N;i++){
+    		for(int j=0;j<N;j++)
+    			board.append(String.format("%2d", boards[i][j]));
+    		board.append("\n");
+    	}
+    	return board.toString();
+    }
+    
+    public static void main(String[] args) {  // unit tests (not graded)
+    	 // create initial board from file  
+        In in = new In("./8puzzle/puzzle06.txt");  
+        int N = in.readInt();  
+        int[][] blocks = new int[N][N];  
+        for (int i = 0; i < N; i++)  
+            for (int j = 0; j < N; j++)  
+                blocks[i][j] = in.readInt();  
+        Board initial = new Board(blocks);  
+        StdOut.println(initial);  
+        StdOut.println(initial.hamming()); 
+        StdOut.println(initial.manhattan());
+    }  
+}

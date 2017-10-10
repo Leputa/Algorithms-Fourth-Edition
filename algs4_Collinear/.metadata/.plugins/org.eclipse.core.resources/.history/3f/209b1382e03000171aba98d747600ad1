@@ -1,0 +1,198 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+
+
+public class FastCollinearPoints  {
+	private Point origin;
+	private int  numofSeg=0;
+	private ArrayList<LineSegment> segment = new ArrayList<LineSegment>();
+
+
+	public FastCollinearPoints(Point[] points){    // finds all line segments containing 4 points
+		if(points==null)
+			throw new java.lang.NullPointerException("there is no point");
+		int Length=points.length;
+		Arrays.sort(points);
+		Point[] Other=new Point[Length];//except the original point
+		for(int i=0;i<Length-1;i++){
+			if(points[i]==null)
+				throw new java.lang.NullPointerException("the point is no existence");
+			if(points[i].equals(points[i+1]))
+				throw new java.lang.IllegalArgumentException("There is repeated point");
+			Other[i]=points[i];
+		}
+		for(int i=0;i<Length-3;i++){
+			origin=points[i];
+			Arrays.sort(Other,i+1,Length,origin.slopeOrder());
+			Arrays.sort(Other,0,i,origin.slopeOrder());
+			double tmpslope=0.0;
+			double tmpslope2=0.0;
+			int tag=0;
+			int j;
+			for(j=i+3;j<Length;j++){
+				tmpslope=origin.slopeTo(Other[j]);
+				if(tmpslope==origin.slopeTo(Other[j-1])&&tmpslope==origin.slopeTo(Other[j-2]))
+					tag=1;
+			}
+			if(tag==1){
+				int k=0;
+				while(k<i){
+					tmpslope2=origin.slopeTo(Other[k]);
+					if(tmpslope2<tmpslope)
+						k++;
+					else
+						break;
+				}
+				if(tmpslope2!=tmpslope){
+					segment.add(new LineSegment(origin, Other[j]));
+					numofSeg++;
+				}
+			}// if tag
+		}
+	}
+	public int numberOfSegments(){	      // the number of line segments
+		return numofSeg;
+	}
+	public LineSegment[] segments() {     // the line segments
+		LineSegment[] results = new LineSegment[numofSeg];
+		for (int i = 0; i < numofSeg; i++) {
+			results[i] = segment.get(i);
+		}
+		return results;
+	} 
+    public static void main(String[] args) {
+        /* YOUR CODE HERE */
+        // read the n points from a file
+        In in = new In("./collinear/input10.txt");
+        int n = in.readInt();
+        Point[] points = new Point[n];
+        for (int i = 0; i < n; i++) {
+            int x = in.readInt();
+            int y = in.readInt();
+            points[i] = new Point(x, y);
+        }
+
+        // draw the points
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        for (Point p : points) {
+            p.draw();
+        }
+        StdDraw.show();
+
+        // print and draw the line segments
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
+        for (LineSegment segment : collinear.segments()) {
+            StdOut.println(segment);
+            segment.draw();
+        }
+        StdDraw.show();
+    }
+}
+
+
+
+/*
+public class FastCollinearPoints {
+        private int N;
+        private ArrayList<LineSegment> segment = new ArrayList<LineSegment>();
+        private Point[] points;
+
+        public FastCollinearPoints(Point[] points) {
+            if (points == null)
+                throw new java.lang.NullPointerException();
+            this.points = new Point[points.length];
+            for (int i = 0; i < points.length; i++) {
+                this.points[i] = points[i];
+            }
+            N = 0;
+            Arrays.sort(this.points);
+            // remove repeat points
+            for (int i = 0; i < this.points.length - 1; i++) {
+                if (this.points[i].compareTo(this.points[i + 1]) == 0) {
+                    throw new java.lang.IllegalArgumentException();
+                }
+            }
+            Point[] temp = new Point[this.points.length];
+            Point[] copy = new Point[this.points.length];
+            ArrayList<ArrayList<Point>> end_sets = new ArrayList<>();
+            // use a copy to sort
+            for (int i = 0; i < this.points.length; i++) {
+                temp[i] = copy[i] = this.points[i];
+                end_sets.add(new ArrayList<Point>());
+            }
+
+            Arrays.sort(copy);
+            
+            // to sort by slope
+            for (int i = 0; i < copy.length - 1; i++) {
+                Arrays.sort(temp, copy[i].slopeOrder());
+                // find same slope copy then save them as segment in segment
+                // ArrayList
+                int count = 1;
+                double slope0 = copy[i].slopeTo(temp[0]);
+                ArrayList<Point> set = new ArrayList<>();
+                for (int j = 0; j < temp.length; j++) {
+
+                    // record max point
+                    double slope1 = copy[i].slopeTo(temp[j]);
+                    if (slope1 == slope0) {
+                        set.add(temp[j]);
+                        count++;
+                        if (count > 2 && j == temp.length - 1) {
+                            set.add(copy[i]);
+                            Collections.sort(set);
+                            // System.out.println(set);
+                            if (set.get(0).compareTo(copy[i]) < 0) {
+                                
+                            } else {
+                                // no key, no set
+                                segment.add(new LineSegment(set.get(0), set.get(set.size() - 1)));
+                                N++;
+                            }                        
+                            count = 1;
+                        }
+                    } else {
+                        if (count > 2) {
+                            set.add(copy[i]);
+                            Collections.sort(set);
+                            // System.out.println(set);
+                            
+                            if (set.get(0).compareTo(copy[i]) < 0) {
+                                
+                            } else {
+                                // no key, no set
+                                segment.add(new LineSegment(set.get(0), set.get(set.size() - 1)));
+                                N++;
+                            }
+                        }
+                        set = new ArrayList<>();
+                        set.add(temp[j]);
+                        count = 1;
+                    }
+                    slope0 = slope1;
+                }
+            }
+        }
+
+   // the number of line segments
+    public int numberOfSegments() {
+        return N;
+    }
+
+    // the line segments
+    public LineSegment[] segments() {
+        LineSegment[] results = new LineSegment[N];
+        for (int i = 0; i < N; i++) {
+            results[i] = segment.get(i);
+        }
+        return results;
+    }
+}
+*/

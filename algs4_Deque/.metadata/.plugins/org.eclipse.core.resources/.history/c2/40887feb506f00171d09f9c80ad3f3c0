@@ -1,0 +1,126 @@
+import java.util.Iterator;
+
+import edu.princeton.cs.algs4.StdOut;
+
+public class Deque <Item> implements Iterable<Item> {
+	private class Node { 
+		Item item;
+		Node pre;
+		Node next;
+	}
+
+	private Node first;
+	private Node last;
+	private int size;
+	
+	public Deque(){    // construct an empty deque
+		first=null;
+		last=null;
+		size=0;	
+	}
+	
+	public boolean isEmpty(){   // is the deque empty?
+		return size==0;
+	}
+	
+	public int size(){   // return the number of items on the deque
+		return size;
+	}
+	
+	public void addFirst(Item item)throws NullPointerException{          // add the item to the front
+		if(item==null)
+			throw new java.lang.NullPointerException("shurubuhefa");
+		Node TmpNode=new Node();
+		TmpNode.item=item;
+		if(isEmpty()){
+			first=TmpNode;
+			last=TmpNode;
+		}
+		else{
+			first.pre=TmpNode;
+			TmpNode.next=first;
+			first=TmpNode;
+		}
+		size++;
+	}
+	
+	public void addLast(Item item){			// add the item to the end
+		if(item==null)
+			throw new java.lang.NullPointerException("shurubuhefa");
+		 Node TmpNode=new Node();
+		 TmpNode.item=item;
+		 if(isEmpty()){
+			 first=TmpNode;
+			 last=TmpNode;
+		   }
+		 else{
+			 last.next=TmpNode;
+			 TmpNode.pre=last;
+			 last=TmpNode;
+		  }
+		 size++;
+	}
+		 
+	   public Item removeFirst(){     // remove and return the item from the front
+		   if(isEmpty())
+			   throw new java.util.NoSuchElementException("Queue underflow");
+		   Item item=first.item;
+		   if(size==1){
+			   first=null;
+			   last=null;
+		   }
+		   else{
+			   first=first.next;
+			   first.pre=null;
+		   }
+		   size--;
+		   return item;
+	   }   
+	   
+	   public Item removeLast(){                 // remove and return the item from the end
+		   if(isEmpty())
+			   throw new java.util.NoSuchElementException("Queue underflow");
+		   Item item=last.item;
+		   if(size==1){
+			   first=null;
+			   last=null;
+		   }
+		   else{
+			   last=last.pre;
+			   last.next=null;
+		   }
+		   size--;
+		   return item; 
+	   }
+	   
+	   public Iterator<Item> iterator(){ // return an iterator over items in order from front to end
+		   return new DequeIterator();
+	   }      
+	   
+	   private class DequeIterator implements Iterator<Item>{
+		   private Node tmpNode=first;
+		   public boolean hasNext(){
+			   return tmpNode!=null;
+		   }
+		   public void remove(){
+			   throw new java.lang.UnsupportedOperationException();  
+		   }
+		   public Item next(){
+			   if(!hasNext())
+				   throw new java.util.NoSuchElementException("Queue underflow");
+			   Item item=tmpNode.item;
+			   tmpNode=tmpNode.next;
+			   return item;
+		   }
+	   }
+	   public static void main(String[] args) {
+		   Deque<String>deque=new Deque<String>();
+		   deque.addFirst("S");
+		   deque.addLast("B");
+		   StdOut.println("size: "+deque.size());
+		   Iterator<String>it=deque.iterator();
+		   while(it.hasNext()){
+			   StdOut.println(it.next());
+		   }
+	}
+}

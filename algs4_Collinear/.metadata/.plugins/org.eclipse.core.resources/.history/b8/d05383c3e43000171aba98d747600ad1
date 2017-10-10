@@ -1,0 +1,100 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+
+
+public class FastCollinearPoints  {
+	private Point origin;
+	private int  numofSeg=0;
+	private ArrayList<LineSegment> segment = new ArrayList<LineSegment>();
+
+
+	public FastCollinearPoints(Point[] points){    // finds all line segments containing 4 points
+		if(points==null)
+			throw new java.lang.NullPointerException("there is no point");
+		int Length=points.length;
+		Arrays.sort(points);
+		Point[] Other=new Point[Length];//except the original point
+		for(int i=0;i<Length-1;i++){
+			if(points[i]==null)
+				throw new java.lang.NullPointerException("the point is no existence");
+			if(points[i].equals(points[i+1]))
+				throw new java.lang.IllegalArgumentException("There is repeated point");
+			Other[i]=points[i];
+		}
+		for(int i=0;i<Length-3;i++){
+			origin=points[i];
+			Arrays.sort(Other,i+1,Length,origin.slopeOrder());
+			Arrays.sort(Other,0,i,origin.slopeOrder());
+			double slope1=0;
+			double slope2=0;
+			int tag=0;
+			int j;
+			for(j=i+3;j<Length;j++){
+				slope1=origin.slopeTo(Other[j]);
+				if(slope1==origin.slopeTo(Other[j-1])&&slope1==origin.slopeTo(Other[j-2]))
+					tag=1;
+			}
+			if(tag==1){
+				int k=0;
+				while(k<i){
+					slope2=origin.slopeTo(Other[k]);
+					if(slope2<slope1)
+						k++;
+					else
+						break;
+				}
+				if(slope2!=slope1){
+					segment.add(new LineSegment(origin, Other[j]));
+					numofSeg++;
+				}
+			}// if tag
+		}
+	}
+	public int numberOfSegments(){	      // the number of line segments
+		return numofSeg;
+	}
+	public LineSegment[] segments() {     // the line segments
+		LineSegment[] results = new LineSegment[numofSeg];
+		for (int i = 0; i < numofSeg; i++) {
+			results[i] = segment.get(i);
+		}
+		return results;
+	} 
+    public static void main(String[] args) {
+        /* YOUR CODE HERE */
+        // read the n points from a file
+        In in = new In("./collinear/input10.txt");
+        int n = in.readInt();
+        Point[] points = new Point[n];
+        for (int i = 0; i < n; i++) {
+            int x = in.readInt();
+            int y = in.readInt();
+            points[i] = new Point(x, y);
+        }
+
+        // draw the points
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        for (Point p : points) {
+            p.draw();
+        }
+        StdDraw.show();
+
+        // print and draw the line segments
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
+        for (LineSegment segment : collinear.segments()) {
+            StdOut.println(segment);
+            segment.draw();
+        }
+        StdDraw.show();
+    }
+}
+
+
+
