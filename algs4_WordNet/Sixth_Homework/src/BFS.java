@@ -1,11 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
-
 import edu.princeton.cs.algs4.Digraph;
-import edu.princeton.cs.algs4.Graph;
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
@@ -193,18 +186,18 @@ public class BFS {
     private void validateVertex(int v) {
         int V = marked.length;
         if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+            throw new java.lang.IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
     }
 
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
     private void validateVertices(Iterable<Integer> vertices) {
         if (vertices == null) {
-            throw new IllegalArgumentException("argument is null");
+            throw new java.lang.NullPointerException("argument is null");
         }
         int V = marked.length;
         for (int v : vertices) {
             if (v < 0 || v >= V) {
-                throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+                throw new java.lang.IndexOutOfBoundsException("vertex " + v + " is not between 0 and " + (V-1));
             }
         }
     }

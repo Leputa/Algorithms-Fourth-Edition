@@ -11,17 +11,16 @@ import edu.princeton.cs.algs4.SET;
 public class WordNet {
 	private class Noun implements Comparable<Noun>{
 		private String noun;
-		private List<Integer>id;
+		private List<Integer>id=new ArrayList<>();;
 		
 		public Noun(String noun){
-			id=new ArrayList<>();
 			this.noun=noun;
 		}
 		
 		public List<Integer>getId(){
 			return this.id;
 		}
-		public void addId(int x) {
+		public void addId(Integer x) {
 			this.id.add(x);
 		}
 
@@ -53,7 +52,7 @@ public class WordNet {
 		while(line!=null) {
 			++maxV;
 			String[]tmpline=line.split(",");
-			int id=Integer.parseInt(tmpline[0]);
+			Integer id=Integer.parseInt(tmpline[0]);
 			String[]synonym=tmpline[1].split(" ");
 			for(String nounName:synonym) {
 				Noun noun=new Noun(nounName);
@@ -66,32 +65,31 @@ public class WordNet {
 					nounSet.add(noun);
 				}
 			}
-			
 			if(map.getOrDefault(id, null)==null)
 				map.put(id, tmpline[1]);
 			else
 				throw new java.lang.IllegalArgumentException();
-			
 			line=inSynset.readLine();
 		}
 		G=new Digraph(maxV);
-		Boolean[]isNotRoot=new Boolean[maxV];
+		boolean[]isNotRoot=new boolean[maxV];
 		line=inHypernyms.readLine();
 		while(line!=null) {
 			String[]tmpLine=line.split(",");
 			int v=Integer.parseInt(tmpLine[0]);
 			isNotRoot[v]=true;
 			for(int i=1;i<tmpLine.length;++i) {
-				int w=Integer.parseInt(tmpLine[i]);
+				Integer w=Integer.parseInt(tmpLine[i]);
 				G.addEdge(v, w);
 			}
+			line=inHypernyms.readLine();
 		}
-		line=inHypernyms.readLine();
+		
 		
 		//The wordnet digraph only has one root
 		rootCount=0;
 		for(int i=0;i<maxV;++i) {
-			if(isNotRoot[i])
+			if(!isNotRoot[i])
 				++rootCount;
 			if(rootCount>1)
 				throw new java.lang.IllegalArgumentException();
@@ -115,20 +113,22 @@ public class WordNet {
 
 	// is the word a WordNet noun?
 	public boolean isNoun(String word) {
+		if(word==null)
+			throw new java.lang.IllegalArgumentException();
 		Noun noun=new Noun(word);
 		return nounSet.contains(noun);
 	}
 
 	// distance between nounA and nounB (defined below)
 	public int distance(String nounA, String nounB) {
-	    if (!isNoun(nounA)){  
+        if (!isNoun(nounA)){  
             throw new java.lang.IllegalArgumentException();  
         }  
         if (!isNoun(nounB)){  
             throw new java.lang.IllegalArgumentException();  
-        }
+        } 
         Noun nodeA=nounSet.ceiling(new Noun(nounA));
-        Noun nodeB=nounSet.ceiling(new Noun(nounA));
+        Noun nodeB=nounSet.ceiling(new Noun(nounB));
         return sap.length(nodeA.getId(), nodeB.getId());
 	}
 
@@ -140,12 +140,10 @@ public class WordNet {
         }  
         if (!isNoun(nounB)){  
             throw new java.lang.IllegalArgumentException();  
-        }
-        Noun nodeA=nounSet.ceiling(new Noun(nounA));
-        Noun nodeB=nounSet.ceiling(new Noun(nounA));
-        
-        return map.get(sap.ancestor(nodeA.getId(), nodeB.getId()));
-		
+        }  
+        Noun nodeA = nounSet.ceiling(new Noun(nounA));  
+        Noun nodeB = nounSet.ceiling(new Noun(nounB));  
+        return map.get(sap.ancestor(nodeA.getId(), nodeB.getId()));  
 	}
 
 	// do unit testing of this class
