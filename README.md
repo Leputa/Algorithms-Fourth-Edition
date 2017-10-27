@@ -1,4 +1,4 @@
-# Algorithms-Part-I
+# Algorithms
 
 
 algs4_Percolation
@@ -44,3 +44,11 @@ Programming Assignment 5: KdTree
 Write a data type to represent a set of points in the unit square (all points have x- and y-coordinates between 0 and 1) using a 2d-tree to support efficient range search (find all of the points contained in a query rectangle) and nearest neighbor search (find a closest point to a query point).
 
 Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/kdtree.html
+
+algs4_WordNet
+
+Programming Assignment 6: WordNet
+
+WordNet is a semantic lexicon for the English language that is used extensively by computational linguists and cognitive scientists; for example, it was a key component in IBM's Watson. WordNet groups words into sets of synonyms called synsets and describes semantic relationships between them. One such relationship is the is-a relationship, which connects a hyponym (more specific synset) to a hypernym (more general synset). For example, animal is a hypernym of both bird and fish; bird is a hypernym of eagle, pigeon, and seagull.
+
+Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/wordnet.html
