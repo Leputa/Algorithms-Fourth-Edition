@@ -53,6 +53,7 @@ WordNet is a semantic lexicon for the English language that is used extensively 
 
 Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/wordnet.html
 
+
 algs4_Seam Carving
 
 Programming Assignment 7: Seam Carving
