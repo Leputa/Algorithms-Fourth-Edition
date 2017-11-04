@@ -52,3 +52,11 @@ Programming Assignment 6: WordNet
 WordNet is a semantic lexicon for the English language that is used extensively by computational linguists and cognitive scientists; for example, it was a key component in IBM's Watson. WordNet groups words into sets of synonyms called synsets and describes semantic relationships between them. One such relationship is the is-a relationship, which connects a hyponym (more specific synset) to a hypernym (more general synset). For example, animal is a hypernym of both bird and fish; bird is a hypernym of eagle, pigeon, and seagull.
 
 Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/wordnet.html
+
+algs4_Seam Carving
+
+Programming Assignment 7: Seam Carving
+
+Seam-carving is a content-aware image resizing technique where the image is reduced in size by one pixel of height (or width) at a time. A vertical seam in an image is a path of pixels connected from the top to the bottom with one pixel in each row. (A horizontal seam is a path of pixels connected from the left to the right with one pixel in each column.) Below left is the original 505-by-287 pixel image; below right is the result after removing 150 vertical seams, resulting in a 30% narrower image. Unlike standard content-agnostic resizing techniques (e.g. cropping and scaling), the most interesting features (aspect ratio, set of objects present, etc.) of the image are preserved.
+
+Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/seam.html
