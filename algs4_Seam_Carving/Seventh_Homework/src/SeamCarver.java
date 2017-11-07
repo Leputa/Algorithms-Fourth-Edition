@@ -6,7 +6,6 @@ import edu.princeton.cs.algs4.Picture;
 public class SeamCarver {
 	static final private double BORDERENERGY=1000;
 	private Picture picture;
-	private double[][] energyMatrix;
 	private Color[][] colorMatrix;
 	private double[] distTo;
 	private int[] edgeTo;
@@ -20,18 +19,11 @@ public class SeamCarver {
 		for(int i=0;i<picture.height();i++)
 			for(int j=0;j<picture.width();j++)
 				colorMatrix[i][j]=picture.get(j, i);
-		setEnergyMatrix();
 		distTo=new double[width()*height()];
 		edgeTo=new int[width()*height()];
 	}
 	
-	private void setEnergyMatrix() {
-		energyMatrix=new double[height()][width()];
-		for (int i=0;i<height();i++)
-			for(int j=0;j<width();j++)
-				energyMatrix[i][j]=energy(j, i);             
-	}
-	
+
 
 
 	public Picture picture() {                          // current picture
@@ -73,7 +65,7 @@ public class SeamCarver {
 		return Math.sqrt(redX*redX+greenX*greenX+blueX*blueX+redY*redY+greenY*greenY+blueY*blueY);
 	}
 	
-	private void DijkstraSP(boolean isVertical,double[][]energyMatrix) {
+	private void DijkstraSP(boolean isVertical) {
 		int V=width()*height();
 		for(int v=0;v<V;v++) {
 			distTo[v]=Double.POSITIVE_INFINITY;
@@ -91,7 +83,7 @@ public class SeamCarver {
 		boolean notFinStat=true;
 		while(!pq.isEmpty()&&notFinStat) {
 			int v=pq.delMin();
-			relax(v,isVertical,pq,energyMatrix);
+			relax(v,isVertical,pq);
 			//ensure there is at least a path to bottom rather than left or right
 			for(int i=V-1;i>=V-Len;--i) {
 				if(distTo[i]!=Double.POSITIVE_INFINITY) {
@@ -103,7 +95,7 @@ public class SeamCarver {
 		
 	}
 	
-	private void relax(int v, boolean isVertical,IndexMinPQ<Double> pq,double[][]energy) {
+	private void relax(int v, boolean isVertical,IndexMinPQ<Double> pq) {
 		// TODO Auto-generated method stub
 		int x,y,w;
 		double weight;
@@ -120,7 +112,10 @@ public class SeamCarver {
 		//choose the three pixels(w) below v
 		for(int k=-1;k<2;k++){
 			w=(y+1)*width+x+k;
-			weight=energy[y+1][x+k];
+			if(isVertical)
+				weight=energy(x+k, y+1);
+			else
+				weight=energy(y+1, x+k);
 			if(distTo[w]>distTo[v]+weight) {
 				distTo[w]=distTo[v]+weight;
 				edgeTo[w]=v;
@@ -161,21 +156,13 @@ public class SeamCarver {
 		return seamPath;
 	}
 	
-	private double[][] energyTranspose() {
-		double[][] result = new double[width()][height()];
-	    for (int y = 0; y < width(); y++)
-	    	for (int x = 0; x < height(); x++) { 
-	        	   result[y][x] = energyMatrix[x][y];
-	       }   
-	       return result;        
-	}
 	
 	public int[] findHorizontalSeam() {               // sequence of indices for horizontal seam
-		DijkstraSP(false, energyTranspose());
+		DijkstraSP(false);
 		return findSeam(false);
 	}
 	public int[] findVerticalSeam() {                 // sequence of indices for vertical seam
-		DijkstraSP(true, energyMatrix);
+		DijkstraSP(true);
 		return findSeam(true);
 	}
 	
@@ -188,6 +175,8 @@ public class SeamCarver {
 			throw new java.lang.IllegalArgumentException();
 		Color[][]copy=new Color[height-1][width];
 		for(int x=0;x<width;x++) {
+			if(seam[x]<0||seam[x]>=height)
+				throw new java.lang.IllegalArgumentException();
 			for(int y=0;y<height;y++) {
 				if(y<seam[x])
 					copy[y][x]=colorMatrix[y][x];
@@ -196,9 +185,7 @@ public class SeamCarver {
 			}
 		}
 		colorMatrix=copy;
-		picture();
-		setEnergyMatrix();
-		
+		picture();	
 	}
 	
 	public void removeVerticalSeam(int[] seam) {     // remove vertical seam from current picture
@@ -210,6 +197,8 @@ public class SeamCarver {
 			throw new java.lang.IllegalArgumentException();
 		Color[][]copy=new Color[height][width-1];
 		for(int y=0;y<height;y++) {
+			if(seam[y]<0||seam[y]>=width)
+				throw new java.lang.IllegalArgumentException();
 			for(int x=0;x<width;x++) {
 				if(x<seam[y])
 					copy[y][x]=colorMatrix[y][x];
@@ -219,7 +208,6 @@ public class SeamCarver {
 		}
 		colorMatrix=copy;
 		picture();
-		setEnergyMatrix();	
 	}
 	
 	public static void main(String[] args) {

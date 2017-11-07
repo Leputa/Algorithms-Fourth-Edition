@@ -61,7 +61,7 @@ public class PrintSeams {
     }
 
     public static void main(String[] args) {
-        Picture picture = new Picture("./seam/3x7.png");
+        Picture picture = new Picture("./seam/7x3.png");
         StdOut.printf("%s (%d-by-%d image)\n", "./seam/3x7.png", picture.width(), picture.height());
         StdOut.println();
         StdOut.println("The table gives the dual-gradient energies of each pixel.");
