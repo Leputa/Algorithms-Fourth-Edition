@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.IndexMinPQ;
 import edu.princeton.cs.algs4.Picture;
 
 public class SeamCarver {
-	final private double BORDERENERGY=1000;
+	static final private double BORDERENERGY=1000;
 	private Picture picture;
 	private double[][] energyMatrix;
 	private Color[][] colorMatrix;
@@ -37,13 +37,15 @@ public class SeamCarver {
 	public Picture picture() {                          // current picture
 		int height=colorMatrix.length;
 		int width=colorMatrix[0].length;
-		Picture newPicture = new Picture(height,width);
-	        for (int x = 0; x < height; x++) {
-	            for (int y = 0; y < width; y++) {
-	                newPicture.set(x, y, colorMatrix[y][x]);
-	            }
+		System.out.println(height+"  "+width);
+		Picture newPicture = new Picture(width,height);
+	    for (int x = 0; x < height; x++) {
+	    	for (int y = 0; y < width; y++) {
+	    		newPicture.set(y, x, colorMatrix[x][y]);
 	        }
-	        return newPicture;
+	    }
+	    this.picture=newPicture;
+	    return newPicture;
 	}
 	
 	public int width() {                            // width of current picture
@@ -55,7 +57,7 @@ public class SeamCarver {
 	}
 	public double energy(int x, int y) {               // energy of pixel at column x and row y
 		if(x<0||x>=width()||y<0||y>=height())
-			throw new java.lang.IllegalArgumentException("yiyi");
+			throw new java.lang.IllegalArgumentException("");
 		if(x==0||x==colorMatrix[0].length-1||y==0||y==colorMatrix.length-1)
 			return BORDERENERGY;
 		final Color leftPixel=colorMatrix[y][x-1];
@@ -101,7 +103,6 @@ public class SeamCarver {
 		
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void relax(int v, boolean isVertical,IndexMinPQ<Double> pq,double[][]energy) {
 		// TODO Auto-generated method stub
 		int x,y,w;
@@ -195,8 +196,9 @@ public class SeamCarver {
 			}
 		}
 		colorMatrix=copy;
-		setEnergyMatrix();
 		picture();
+		setEnergyMatrix();
+		
 	}
 	
 	public void removeVerticalSeam(int[] seam) {     // remove vertical seam from current picture
@@ -216,8 +218,8 @@ public class SeamCarver {
 			}
 		}
 		colorMatrix=copy;
-		setEnergyMatrix();
 		picture();
+		setEnergyMatrix();	
 	}
 	
 	public static void main(String[] args) {
