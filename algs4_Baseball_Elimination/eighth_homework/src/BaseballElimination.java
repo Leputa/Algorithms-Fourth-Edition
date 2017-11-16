@@ -1,5 +1,3 @@
-package eighth_homework;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,35 +20,32 @@ public class BaseballElimination {
 	private List<List<Integer>>R; 
 	
 	public BaseballElimination(String filename) {
-		In input=new In(filename);
-		String line=input.readLine();
-		num=Integer.parseInt(line);
-		w=new int[num];
-		l=new int[num];
-		r=new int[num];
-		g=new int[num][num];
-		teams=new ArrayList<String>();
-		isEliminateExec=new boolean[num];
-		R=new ArrayList<>();
-		for(int i=0;i<num;i++) {
-			List<Integer>tmpList=new ArrayList<>();
-			R.add(tmpList);
-		}
-		
-		line=input.readLine();
-		int i=0;
-		while(line!=null) {
-			String[]lines=line.split("\\s+");
-			teams.add(lines[0]);
-			w[i]=Integer.parseInt(lines[1]);
-			r[i]=Integer.parseInt(lines[2]);
-			r[i]=Integer.parseInt(lines[3]);
-			for(int j=4;j<4+num;j++) {
-				g[i][j-4]=Integer.parseInt(lines[j]);
-			}
-			++i;
-			line=input.readLine();
-		}
+		 In in = new In(filename);
+	        
+	     // initial variable
+	     num = in.readShort();
+	     teams = new ArrayList<>();
+	     w = new int[num];
+	     l = new int[num];
+	     r = new int[num];
+	     g = new int[num][num];
+	     
+	     isEliminateExec=new boolean[num];
+	     R=new ArrayList<List<Integer>>();
+	     for(int i=0;i<num;i++) {
+	    	 List<Integer>tmpList=new ArrayList<>();
+	    	 R.add(tmpList);
+	     }
+	     int i = 0;
+	     while (!in.isEmpty()) {
+	         teams.add(in.readString());
+	         w[i] = in.readShort();
+	         l[i] = in.readShort();
+	         r[i] = in.readShort();
+	         for (int j = 0; j < num; j++) 
+	             g[i][j] = in.readShort();            
+	         i++;
+	     }
 	}
 	
 	// number of teams
