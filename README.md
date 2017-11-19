@@ -74,7 +74,7 @@ Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/ass
 
 algs4_Boggle
 
-Programming Assignment 4: Boggle
+Programming Assignment 9: Boggle
 
 Write a program to play the word game Boggle®.
 
