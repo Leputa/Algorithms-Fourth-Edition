@@ -70,3 +70,12 @@ Programming Assignment 8: Baseball Elimination
 Given the standings in a sports division at some point during the season, determine which teams have been mathematically eliminated from winning their division.
 
 Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/baseball.html
+
+
+algs4_Boggle
+
+Programming Assignment 4: Boggle
+
+Write a program to play the word game Boggle®.
+
+Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/boggle.html
