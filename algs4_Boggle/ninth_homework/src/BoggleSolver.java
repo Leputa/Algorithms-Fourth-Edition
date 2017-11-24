@@ -27,35 +27,45 @@ public class BoggleSolver {
     	for(int i=0;i<M;i++) {
     		for(int j=0;j<N;j++) {
     			marked=new boolean[M][N];
-    			StringBuilder sb=new StringBuilder();
     			trieSET.resetSearch();
-    			dfs(board,i,j,sb,marked);
+    			dfs(board,i,j,"");
     		}
     	}
     	return validWords;
     }
 
   
-	private void dfs(BoggleBoard board,int i, int j, StringBuilder sb,boolean marked[][]) {
+	private void dfs(BoggleBoard board,int i, int j, String word) {
 		// TODO Auto-generated method stub
 		marked[i][j]=true;
 		char c=board.getLetter(i, j);
 		if(trieSET.oneStepForward(c)) {
-			sb.append(c);
-			if(sb.length()>=3&&trieSET.contains(sb.toString())) {
-				validWords.add(sb.toString());
+			String tmpString=new String();
+			if(c=='Q') {
+				if(!trieSET.oneStepForward('U')) {
+					trieSET.oneStepBack();
+					return;
+				}
+				else
+					tmpString=word+c+'U';
+			}
+			else 
+				tmpString=word+c;
+			if(tmpString.length()>=3&&trieSET.contains(tmpString)) {
+				validWords.add(tmpString);
 			}
 			for(int x=-1;x<=1;x++) {
 				for(int y=-1;y<=1;y++) {
 					if(i+x>=0&&i+x<M&&j+y>=0&&j+y<N&&!marked[i+x][j+y]) {
-						dfs(board, i+x, j+y, sb,marked);
+						dfs(board, i+x, j+y, tmpString);
+						marked[i+x][j+y]=false;
 					}	
 				}
 			}
+			if(c=='Q')
+				trieSET.oneStepBack();
 			trieSET.oneStepBack();
 		}
-		else 
-			return;
 	}
 
 	// Returns the score of the given word if it is in the dictionary, zero otherwise.
@@ -84,6 +94,4 @@ public class BoggleSolver {
         }
         StdOut.println("Score = " + score);
     }
-    
-
 }
