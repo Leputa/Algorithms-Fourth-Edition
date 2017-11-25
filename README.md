@@ -79,3 +79,12 @@ Programming Assignment 9: Boggle
 Write a program to play the word game Boggle®.
 
 Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/boggle.html
+
+
+algs4_Burrows_Wheeler
+
+Programming Assignment 10: Burrows Wheeler
+
+Implement the Burrows–Wheeler data compression algorithm. This revolutionary algorithm outcompresses gzip and PKZIP, is relatively easy to implement, and is not protected by any patents. It forms the basis of the Unix compression utility bzip2.
+
+Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/assignments/burrows.html
