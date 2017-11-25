@@ -83,7 +83,7 @@ Programming Assignment Specifications:http://coursera.cs.princeton.edu/algs4/ass
 
 algs4_Burrows_Wheeler
 
-Programming Assignment 10: Burrows Wheeler
+Programming Assignment 10: Burrows–Wheeler Data Compression
 
 Implement the Burrows–Wheeler data compression algorithm. This revolutionary algorithm outcompresses gzip and PKZIP, is relatively easy to implement, and is not protected by any patents. It forms the basis of the Unix compression utility bzip2.
 
